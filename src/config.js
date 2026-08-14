@@ -155,7 +155,7 @@ export const HORN_SOUNDS = [
   '/Asset/Horn Sound/Bus Horn Sound Download Tamil Nadu.mp3',
 ];
 
-export const SLIDE_DURATION_MS = 65000;
+export const SLIDE_DURATION_MS = 20000;
 
 export const DEFAULT_CULTURE = 'nepali';
 
