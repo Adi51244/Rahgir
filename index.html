@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="राहगीर — नेपाली, पंजाबी और भोजपुरी गाने। हिमालय से गंगा तक, एक रात भर की सफर।" />
+  <meta property="og:title" content="राहगीर — Nepali, Punjabi & Bhojpuri Radio" />
+  <meta property="og:description" content="नेपाली, पंजाबी और भोजपुरी गाने — बस की सीट पर, रात भर।" />
+  <meta name="theme-color" content="#1a0f0a" />
+  <title>राहगीर — Nepali, Punjabi & Bhojpuri Radio</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <div id="slideshow" aria-hidden="true"></div>
+
+  <!-- Full-screen hero — bus visible, player floats at bottom -->
+  <div class="hero-viewport">
+    <div class="page page-hero">
+      <header class="top-bar">
+        <nav class="nav-links">
+          <a href="/" class="active">रेडियो</a>
+          <a href="/playlists.html">प्लेलिस्ट</a>
+          <a href="/songs.html">गाने</a>
+        </nav>
+        <div class="top-meta">
+          <span id="live-clock" class="live-clock">--:--</span>
+          <div class="live-badge">
+            <span id="track-count">ट्यून हो रहा है…</span>
+            <span id="altitude-badge" class="altitude-badge" hidden>१,४०० m · ऊँचाई</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="hero">
+        <div class="hero-title-wrap">
+          <div class="hero-quotes" aria-hidden="true">
+            <span class="hero-quote hero-quote-left" id="hero-quote-left">रात भर · हिमालय से</span>
+            <span class="hero-quote hero-quote-right" id="hero-quote-right">पोखरा तक</span>
+          </div>
+          <h1 id="hero-title" aria-label="राहगीर">
+            <span class="letter" data-part="ra">रा</span><span class="letter" data-part="ha">ह</span><span class="letter" data-part="gi">गी</span><span class="letter" data-part="r">र</span>
+          </h1>
+        </div>
+        <p id="route-label">काठमाण्डौ – पोखरा – बागलुङ</p>
+        <p id="culture-sub">नेपाली · रात भर सफर</p>
+
+        <div class="horn-wrap">
+          <button id="horn-btn" type="button" aria-label="हॉर्न बजाएं">
+            🚌 <span class="horn-hi">हॉर्न</span>
+            <span class="horn-en">Horn ok please</span>
+          </button>
+          <button id="horn-stop-btn" type="button" aria-label="हॉर्न रोकें" hidden>⏹</button>
+        </div>
+
+        <div class="culture-tabs" role="tablist">
+          <button class="culture-tab active" data-culture="nepali" role="tab">🇳🇵 नेपाली</button>
+          <button class="culture-tab" data-culture="punjabi" role="tab">🌾 पंजाबी</button>
+          <button class="culture-tab" data-culture="bhojpuri" role="tab">🪔 भोजपुरी</button>
+        </div>
+
+        <a href="#scroll-page" class="scroll-hint" aria-label="नीचे स्क्रॉल करें">↓ विवरण</a>
+      </main>
+    </div>
+  </div>
+
+  <!-- Details page — scroll down to see -->
+  <div class="scroll-page" id="scroll-page">
+    <section class="scroll-section" id="culture-section">
+      <h2 id="culture-significance-title">संस्कृति</h2>
+      <p id="culture-significance-body">—</p>
+      <p id="culture-significance-extra" class="scroll-extra">—</p>
+      <ul id="culture-highlights" class="culture-highlights"></ul>
+      <p id="culture-journey" class="scroll-journey">—</p>
+    </section>
+
+    <section class="scroll-section" id="songs-section">
+      <h2>गाने के बारे में</h2>
+      <p id="songs-about-body">—</p>
+      <div class="current-track-card" id="current-track-card">
+        <img id="section-track-art" src="" alt="" />
+        <div>
+          <strong id="section-track-title">—</strong>
+          <span id="section-track-artist">—</span>
+        </div>
+      </div>
+      <p class="scroll-note">↑ ऊपर स्क्रॉल करें — बस और रेडियो</p>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <span class="footer-logo">🚌 राहगीर</span>
+        <p>हिमालय से गंगा तक — एक रात भर की सफर</p>
+      </div>
+      <div class="footer-links">
+        <a href="/playlists.html">प्लेलिस्ट</a>
+        <a href="/songs.html">सभी गाने</a>
+        <a href="https://raahgir.wtf" target="_blank" rel="noopener">raahgir.wtf</a>
+      </div>
+      <div class="footer-credits">
+        <p>Made with ❤️ by <strong>Aditya Kumar</strong> · <a href="https://github.com/Adi51244" target="_blank" rel="noopener">@Adi51244</a></p>
+        <p class="footer-contact">contact: <a href="mailto:kumarsinghu0@gmail.com">kumarsinghu0@gmail.com</a></p>
+        <p class="footer-copy">© 2026 राहगीर · <a href="https://github.com/Adi51244/Rahgir" target="_blank" rel="noopener">github.com/Adi51244/Rahgir</a></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Compact fixed player — near wheel / bottom -->
+  <div class="player-glass player-fixed" role="region" aria-label="म्यूज़िक प्लेयर">
+    <div class="player-compact">
+      <div class="cd-wrap cd-sm">
+        <img id="cd-art" src="" alt="Album art" />
+      </div>
+
+      <div class="player-track-block">
+        <div id="now-playing-title">ट्यून हो रहा है…</div>
+        <div id="now-playing-artist">—</div>
+        <div class="progress-inline">
+          <input type="range" id="progress-bar" class="range-fill" min="0" max="100" value="0" aria-label="प्रगति" />
+          <span class="time-combined"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
+        </div>
+      </div>
+
+      <div class="player-transport">
+        <button class="ctrl-btn ctrl-sm" id="shuffle-btn" title="शफ़ल">🔀</button>
+        <button class="ctrl-btn ctrl-sm" id="prev-btn" title="पिछला">⏮</button>
+        <button class="ctrl-btn" id="play-btn" title="चलाएं">▶</button>
+        <button class="ctrl-btn ctrl-sm" id="next-btn" title="अगला">⏭</button>
+        <button class="ctrl-btn ctrl-sm" id="queue-btn" title="कतार">☰</button>
+        <button class="ctrl-btn ctrl-sm" id="ticket-btn" title="टिकट">🎫</button>
+      </div>
+
+      <div class="volume-wrap volume-compact">
+        <span aria-hidden="true">🔊</span>
+        <input type="range" id="volume-bar" class="range-fill" min="0" max="100" value="80" aria-label="आवाज़" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Queue -->
+  <aside id="queue-panel" aria-label="गाने की कतार">
+    <h3>🎵 कतार</h3>
+    <ul id="queue-list"></ul>
+  </aside>
+
+  <div class="kbd-hints">
+    <span>Space · चलाएं/रोकें</span>
+    <span>←→ · ट्रैक</span>
+    <span>Q · कतार</span>
+    <span>H · हॉर्न</span>
+  </div>
+
+  <!-- Ticket modal -->
+  <div id="ticket-modal" aria-hidden="true" role="dialog" aria-label="शेयर टिकट">
+    <button id="ticket-close" aria-label="बंद करें">×</button>
+    <div class="ticket-card">
+      <div id="ticket-visual" class="ticket-visual">
+      <div class="ticket-top">
+        <div class="ticket-header">
+          <div class="ticket-brand">
+            <div class="ticket-icon">🚌</div>
+            <div>
+              <h2>राहगीर</h2>
+              <small>राहगीर</small>
+            </div>
+          </div>
+          <span id="ticket-service">हिमालय सेवा</span>
+        </div>
+        <div class="ticket-field">
+          <span class="lbl">रूट</span>
+          <span class="val" id="ticket-route">—</span>
+        </div>
+        <div class="ticket-field">
+          <span class="lbl">बोर्डिंग</span>
+          <span class="val" id="ticket-boarding">—</span>
+        </div>
+      </div>
+      <div class="ticket-perforation"><span class="notch-r"></span></div>
+      <div class="ticket-bottom">
+        <div class="ticket-field ticket-now">
+          <span class="lbl">अभी बज रहा है</span>
+          <span class="val title" id="ticket-song">—</span>
+          <span class="val" id="ticket-artist" style="font-weight:400;color:#666;font-size:0.85rem">—</span>
+        </div>
+        <div class="ticket-grid">
+          <div class="ticket-field">
+            <span class="lbl">सीट</span>
+            <span class="val" id="ticket-seat">—</span>
+          </div>
+          <div class="ticket-field">
+            <span class="lbl">तरफ</span>
+            <span class="val" id="ticket-side">—</span>
+          </div>
+          <div class="ticket-field">
+            <span class="lbl">रवानगी</span>
+            <span class="val" id="ticket-departs">—</span>
+          </div>
+        </div>
+        <div class="ticket-qr-row">
+          <strong style="font-size:0.85rem">raahgir.wtf</strong>
+          <canvas id="ticket-qr" aria-label="QR code"></canvas>
+        </div>
+        <div class="ticket-footer">
+          <span>राहगीर</span>
+          <span>github.com/Adi51244</span>
+        </div>
+      </div>
+      </div>
+      <div class="ticket-actions">
+        <button id="ticket-share" type="button">अपनी टिकट शेयर करें</button>
+        <button id="ticket-dismiss" type="button">अभी नहीं</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="yt-player"></div>
+
+  <a href="https://github.com/Adi51244" class="site-watermark" target="_blank" rel="noopener" aria-label="GitHub — Adi51244">@Adi51244</a>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
