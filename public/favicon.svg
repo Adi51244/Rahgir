@@ -1,47 +1,53 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
-  <!-- Yellow background circle matching ticket logo -->
+  <!-- Yellow background circle matching ticket icon exactly -->
   <circle cx="50" cy="50" r="48" fill="#fbc02d" />
   
-  <!-- Bus shadow / ground -->
-  <ellipse cx="50" cy="79" rx="28" ry="3.5" fill="rgba(0,0,0,0.18)" />
+  <!-- Subtle shadow under wheels -->
+  <ellipse cx="35" cy="68" rx="8" ry="2" fill="rgba(0,0,0,0.18)" />
+  <ellipse cx="65" cy="68" rx="8" ry="2" fill="rgba(0,0,0,0.18)" />
 
-  <!-- Main Bus Body (Teal/Blue with White roof accent) -->
-  <rect x="22" y="27" width="56" height="46" rx="9" fill="#29b6f6" />
-  <path d="M 22 36 Q 22 27 31 27 L 69 27 Q 78 27 78 36 L 78 40 L 22 40 Z" fill="#ffffff" />
-  
-  <!-- Destination / Boarding Header Board -->
-  <rect x="34" y="30" width="32" height="6.5" rx="2" fill="#1a0f0a" />
-  <circle cx="38" cy="33.25" r="1" fill="#ffeb3b" />
-  <line x1="42" y1="33.25" x2="62" y2="33.25" stroke="#ffeb3b" stroke-width="1.2" stroke-linecap="round" />
+  <!-- Roof Luggage / AC Unit -->
+  <rect x="42" y="34.5" width="16" height="3" rx="1.5" fill="#455a64" stroke="#263238" stroke-width="1.2" />
 
-  <!-- Windshield / Front Windows -->
-  <rect x="26" y="42" width="22" height="15" rx="3.5" fill="#0f172a" />
-  <rect x="52" y="42" width="22" height="15" rx="3.5" fill="#0f172a" />
-  <!-- Glass highlights -->
-  <path d="M 28 44 L 38 44 L 30 55 L 28 55 Z" fill="rgba(255,255,255,0.25)" />
-  <path d="M 54 44 L 64 44 L 56 55 L 54 55 Z" fill="rgba(255,255,255,0.25)" />
+  <!-- Bus Outer Shell (with crisp dark outline) -->
+  <!-- Top half (Windows area): Light Blue Glass -->
+  <path d="M 28 41 Q 25 44 24 50 L 24 55 L 76 55 L 76 41 Q 76 38 72 38 L 32 38 Q 29 38 28 41 Z" 
+        fill="#b3e5fc" stroke="#263238" stroke-width="2.2" stroke-linejoin="round" />
 
-  <!-- Grille & License Plate -->
-  <rect x="42" y="60" width="16" height="6" rx="1.5" fill="#1e293b" />
-  <line x1="44" y1="62" x2="56" y2="62" stroke="#64748b" stroke-width="0.9" />
-  <line x1="44" y1="64" x2="56" y2="64" stroke="#64748b" stroke-width="0.9" />
+  <!-- Bottom half (Lower body): Orange/Yellow Gradient -->
+  <path d="M 23 53 L 23 60 Q 23 62 25 62 L 28.5 62 A 6.5 6.5 0 0 1 41.5 62 L 58.5 62 A 6.5 6.5 0 0 1 71.5 62 L 75 62 Q 77 62 77 60 L 77 53 Z" 
+        fill="#ff9800" stroke="#263238" stroke-width="2.2" stroke-linejoin="round" />
 
-  <!-- Headlights -->
-  <circle cx="28.5" cy="62.5" r="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8" />
-  <circle cx="28.5" cy="62.5" r="2.2" fill="#fff59d" />
-  <circle cx="71.5" cy="62.5" r="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8" />
-  <circle cx="71.5" cy="62.5" r="2.2" fill="#fff59d" />
+  <!-- Window Dividers & Frames -->
+  <!-- Windshield -->
+  <path d="M 28 41.5 Q 26 44.5 25.5 50 L 25.5 53 L 34 53 L 34 40 L 32 40 Q 29.5 40 28 41.5 Z" 
+        fill="#81d4fa" stroke="#263238" stroke-width="1.5" />
+  <!-- Door window -->
+  <rect x="36" y="40" width="7" height="13" rx="1" fill="#b3e5fc" stroke="#263238" stroke-width="1.5" />
+  <!-- Middle window -->
+  <rect x="45.5" y="40" width="13.5" height="13" rx="1" fill="#b3e5fc" stroke="#263238" stroke-width="1.5" />
+  <!-- Rear window -->
+  <rect x="61.5" y="40" width="12.5" height="13" rx="1" fill="#b3e5fc" stroke="#263238" stroke-width="1.5" />
 
-  <!-- Orange Side Indicators -->
-  <circle cx="24.5" cy="68" r="1.5" fill="#ff9800" />
-  <circle cx="75.5" cy="68" r="1.5" fill="#ff9800" />
+  <!-- Glass Reflection Sheen -->
+  <path d="M 47 41 L 52 41 L 49 52 L 46.5 52 Z" fill="rgba(255,255,255,0.4)" />
+  <path d="M 63 41 L 68 41 L 65 52 L 62.5 52 Z" fill="rgba(255,255,255,0.4)" />
 
-  <!-- Bumper -->
-  <rect x="20" y="69" width="60" height="5" rx="2.5" fill="#334155" />
+  <!-- Door Outline extending down to lower body -->
+  <line x1="36" y1="53" x2="36" y2="61.5" stroke="#263238" stroke-width="1.5" />
+  <line x1="43" y1="53" x2="43" y2="61.5" stroke="#263238" stroke-width="1.5" />
 
-  <!-- Wheels -->
-  <rect x="25" y="72" width="8" height="7" rx="3" fill="#0f172a" />
-  <rect x="67" y="72" width="8" height="7" rx="3" fill="#0f172a" />
-  <circle cx="29" cy="75" r="1.5" fill="#64748b" />
-  <circle cx="71" cy="75" r="1.5" fill="#64748b" />
+  <!-- Headlight & Tail light -->
+  <circle cx="24.5" cy="56.5" r="1.8" fill="#fff9c4" stroke="#263238" stroke-width="0.8" />
+  <rect x="75" y="55" width="2" height="3" rx="0.5" fill="#f44336" />
+
+  <!-- Front Wheel -->
+  <circle cx="35" cy="62" r="6" fill="#263238" stroke="#102027" stroke-width="1" />
+  <circle cx="35" cy="62" r="2.6" fill="#cfd8dc" />
+  <circle cx="35" cy="62" r="1" fill="#263238" />
+
+  <!-- Rear Wheel -->
+  <circle cx="65" cy="62" r="6" fill="#263238" stroke="#102027" stroke-width="1" />
+  <circle cx="65" cy="62" r="2.6" fill="#cfd8dc" />
+  <circle cx="65" cy="62" r="1" fill="#263238" />
 </svg>
