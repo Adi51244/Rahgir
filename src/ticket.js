@@ -1,6 +1,6 @@
 import html2canvas from 'html2canvas';
 import QRCode from 'qrcode';
-import { SITE_URL, SITE_HOST, CULTURES } from './config.js';
+import { LIVE_URL, SITE_URL, SITE_HOST, CULTURES } from './config.js';
 import { getCurrentTrack, getState } from './store.js';
 import { randomSeat, nowDepartureTime } from './utils.js';
 
