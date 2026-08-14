@@ -1,5 +1,7 @@
 # राहगीर — Nepali, Punjabi & Bhojpuri Music Radio
 
+🌐 **Live Website**: [https://rahgir-beige.vercel.app/](https://rahgir-beige.vercel.app/)
+
 A viral-style music radio website inspired by [busdriver.wtf](https://busdriver.wtf/) and [deluxesalon.in](https://deluxesalon.in/). Sit on a virtual bus seat, pick a culture, and listen all night — from the Himalayas to the Ganges.
 
 ## Home — Nepal (default)
@@ -15,17 +17,12 @@ A viral-style music radio website inspired by [busdriver.wtf](https://busdriver.
 - **Horn OK Please** — bus horn over the music with volume ducking + stop button
 - **Real-time clock** + Nepal altitude badge under song count
 - **Scrollable culture page** — significance, highlights, song info (bus background stays visible)
-- **Share ticket** — PNG image + QR code (not just a URL)
+- **Share ticket** — PNG image + QR code pointing directly to [rahgir-beige.vercel.app](https://rahgir-beige.vercel.app/)
 - **Rotating CD** with real album art from YouTube
-- **Background slideshow** — separate 16:9 (web) and 9:16 (mobile) assets per culture (~65s per slide)
+- **High-performance slideshow** — WebP optimized backgrounds with just-in-time prefetching
+- **Vercel Analytics** integrated for tracking visitors and listening metrics
 - **No autoplay** — music starts only when you press play
 - **Playlists & Songs** pages with Hindi UI labels
-
-## Screenshots
-
-| Player (compact, bottom) | Culture details (scroll) |
-|---|---|
-| ![Player](docs/screenshots/player-compact.png) | ![Culture details](docs/screenshots/culture-details.png) |
 
 ## Asset folders
 
@@ -66,9 +63,7 @@ npm run fetch-playlists
 npm run build
 ```
 
-Upload the `dist/` folder to any static host (Vercel, Netlify, Cloudflare Pages, etc.).
-
-After deploy, the share ticket QR code will automatically use your live URL.
+Upload the `dist/` folder to static hosts (Vercel, Netlify, Cloudflare Pages, etc.).
 
 ## Keyboard shortcuts
 
@@ -83,7 +78,7 @@ After deploy, the share ticket QR code will automatically use your live URL.
 
 ## Share ticket
 
-Press **T** or tap the ticket button. **Share** exports a PNG of your ticket (route, seat, song, QR). On mobile it uses the native share sheet with the image; on desktop it downloads the PNG and copies the link.
+Press **T** or tap the ticket button. **Share** exports a PNG of your ticket (route, seat, song, QR). On mobile it uses the native share sheet with the image; on desktop it downloads the PNG and copies the link (`https://rahgir-beige.vercel.app`).
 
 ## Playlists
 

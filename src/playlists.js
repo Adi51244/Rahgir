@@ -1,5 +1,8 @@
 import { CULTURES } from './config.js';
 import { formatTime } from './utils.js';
+import { inject } from '@vercel/analytics';
+
+inject();
 
 const cardsEl = document.getElementById('playlist-cards');
 const detailEl = document.getElementById('playlist-detail');

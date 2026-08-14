@@ -1,6 +1,6 @@
 import html2canvas from 'html2canvas';
 import QRCode from 'qrcode';
-import { SITE_URL, CULTURES } from './config.js';
+import { SITE_URL, SITE_HOST, CULTURES } from './config.js';
 import { getCurrentTrack, getState } from './store.js';
 import { randomSeat, nowDepartureTime } from './utils.js';
 
@@ -64,9 +64,12 @@ async function renderTicket() {
   document.getElementById('ticket-side').textContent = side;
   document.getElementById('ticket-departs').textContent = departs;
 
+  const urlEl = document.getElementById('ticket-url');
+  if (urlEl) urlEl.textContent = SITE_HOST;
+
   const qrCanvas = document.getElementById('ticket-qr');
   if (qrCanvas) {
-    await QRCode.toCanvas(qrCanvas, SITE_URL, {
+    await QRCode.toCanvas(qrCanvas, LIVE_URL, {
       width: 120,
       margin: 1,
       color: { dark: '#1a0f0a', light: '#f5ebd7' },
@@ -126,13 +129,13 @@ async function shareTicket() {
 
     downloadBlob(blob, filename);
 
-    const shareText = `${text} | ${SITE_URL}`;
+    const shareText = `${text} | ${LIVE_URL}`;
     await navigator.clipboard?.writeText(shareText);
 
     if (btn) btn.textContent = 'PNG डाउनलोड + लिंक कॉपी!';
     setTimeout(() => { if (btn) btn.textContent = orig; }, 2500);
   } catch {
-    const text = `🚌 राहगीर — ${getCurrentTrack()?.title || 'music'} | ${SITE_URL}`;
+    const text = `🚌 राहगीर — ${getCurrentTrack()?.title || 'music'} | ${LIVE_URL}`;
     await navigator.clipboard?.writeText(text);
     if (btn) btn.textContent = 'लिंक कॉपी हो गया!';
     setTimeout(() => { if (btn) btn.textContent = orig; }, 2000);

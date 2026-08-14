@@ -1,5 +1,8 @@
 import { CULTURES } from './config.js';
 import { formatTime } from './utils.js';
+import { inject } from '@vercel/analytics';
+
+inject();
 
 async function loadAll() {
   const container = document.getElementById('songs-container');

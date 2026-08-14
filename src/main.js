@@ -4,6 +4,7 @@ import {
   getState,
   setCulture,
   getCurrentTrack,
+  playTrackAt,
 } from './store.js';
 import {
   initPlayer,
@@ -15,11 +16,15 @@ import {
   setPlayerVolume,
   seekTo,
   loadCultureTracks,
+  playAt,
 } from './player.js';
 import { initSlideshow, setCulture as setSlideCulture } from './slideshow.js';
 import { initHorn } from './horn.js';
 import { initTicket } from './ticket.js';
 import { formatTime } from './utils.js';
+import { inject } from '@vercel/analytics';
+
+inject();
 
 let isDraggingProgress = false;
 let isDraggingVolume = false;
@@ -55,7 +60,7 @@ async function boot() {
   if (trackParam !== null) {
     const idx = parseInt(trackParam, 10);
     if (!Number.isNaN(idx)) {
-      import('./store.js').then(({ playTrackAt }) => playTrackAt(idx));
+      playTrackAt(idx);
     }
   }
 
@@ -281,7 +286,7 @@ function renderQueue(state) {
       <span class="queue-dur">${formatTime(track.duration)}</span>
     `;
     li.addEventListener('click', () => {
-      import('./player.js').then(({ playAt }) => playAt(queuePos));
+      playAt(queuePos);
     });
     list.appendChild(li);
   });

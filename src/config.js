@@ -1,5 +1,9 @@
-/** Site URL for QR codes — update after deploy */
-export const SITE_URL = typeof window !== 'undefined' ? window.location.origin : 'https://raahgir.wtf';
+/** Live site — used for QR codes, sharing, and fallbacks */
+export const LIVE_URL = 'https://rahgir-beige.vercel.app';
+
+export const SITE_URL = LIVE_URL;
+
+export const SITE_HOST = 'rahgir-beige.vercel.app';
 
 export const GITHUB_USER = 'https://github.com/Adi51244';
 export const GITHUB_REPO = 'https://github.com/Adi51244/Rahgir';
@@ -22,11 +26,11 @@ export const CULTURES = {
     dataFile: '/data/nepali.json',
     ytMusic: 'https://music.youtube.com/playlist?list=PLETcP_FdLOGY',
     webImages: [
-      '/Asset/Nepal/Web/nepal-roadway-scenery-5.png',
-      '/Asset/Nepal/Web/nepal-roadway-scenery-1.png',
-      '/Asset/Nepal/Web/nepal-roadway-scenery-2.png',
-      '/Asset/Nepal/Web/nepal-roadway-scenery-3.png',
-      '/Asset/Nepal/Web/nepal-roadway-scenery-4.png',
+      '/Asset/Nepal/Web/nepal-roadway-scenery-5.webp',
+      '/Asset/Nepal/Web/nepal-roadway-scenery-1.webp',
+      '/Asset/Nepal/Web/nepal-roadway-scenery-2.webp',
+      '/Asset/Nepal/Web/nepal-roadway-scenery-3.webp',
+      '/Asset/Nepal/Web/nepal-roadway-scenery-4.webp',
       '/Asset/Nepal/Web/golden_himalayan_sunrise_1.webp',
       '/Asset/Nepal/Web/golden_hour_sunrise.webp',
       '/Asset/Nepal/Web/golden_hour_sunset.webp',
@@ -73,9 +77,9 @@ export const CULTURES = {
     dataFile: '/data/punjabi.json',
     ytMusic: 'https://music.youtube.com/playlist?list=PLKGdFvuCgQRQ',
     webImages: [
-      '/Asset/Punjab/Web/punjab-roadway-scenery-1.png',
-      '/Asset/Punjab/Web/punjab-roadway-scenery-2.png',
-      '/Asset/Punjab/Web/punjab-roadway-scenery-3.png',
+      '/Asset/Punjab/Web/punjab-roadway-scenery-1.webp',
+      '/Asset/Punjab/Web/punjab-roadway-scenery-2.webp',
+      '/Asset/Punjab/Web/punjab-roadway-scenery-3.webp',
       '/Asset/Punjab/Web/punjab_sunrise_golden_hour.webp',
       '/Asset/Punjab/Web/punjab_sunrise_dawn.webp',
       '/Asset/Punjab/Web/punjabi_night_highway.webp',
@@ -118,9 +122,9 @@ export const CULTURES = {
     dataFile: '/data/bhojpuri.json',
     ytMusic: 'https://music.youtube.com/playlist?list=PLVTwrTzYCvPU',
     webImages: [
-      '/Asset/Bihar/Web/bihar-roadway-scenery-1.png',
-      '/Asset/Bihar/Web/bihar-roadway-scenery-2.png',
-      '/Asset/Bihar/Web/bihar-roadway-scenery-3.png',
+      '/Asset/Bihar/Web/bihar-roadway-scenery-1.webp',
+      '/Asset/Bihar/Web/bihar-roadway-scenery-2.webp',
+      '/Asset/Bihar/Web/bihar-roadway-scenery-3.webp',
       '/Asset/Bihar/Web/misty_golden_sunrise.webp',
       '/Asset/Bihar/Web/misty_dawn_blue_hour.webp',
       '/Asset/Bihar/Web/nighttime_bihar_highway.webp',

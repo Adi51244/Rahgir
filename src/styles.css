@@ -70,9 +70,11 @@ a:hover { text-decoration: underline; }
 /* ── Layout ── */
 .hero-viewport {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   min-height: 100vh;
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
 .page {
@@ -80,7 +82,7 @@ a:hover { text-decoration: underline; }
   z-index: 1;
   display: flex;
   flex-direction: column;
-  padding: 1rem 1.25rem calc(var(--player-h) + 0.75rem);
+  padding: 1rem 1.25rem 0.5rem;
 }
 
 .page-hero {
@@ -1360,17 +1362,62 @@ a:hover { text-decoration: underline; }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
+  :root {
+    --player-h: 58px;
+  }
+
+  .hero-viewport {
+    min-height: 100dvh;
+  }
+
+  .page-hero {
+    flex: 1;
+    min-height: 0;
+    padding-bottom: 0;
+  }
+
+  .hero {
+    justify-content: flex-start;
+    padding: 0.35rem 0 0;
+    gap: 0.5rem;
+  }
+
+  #hero-title {
+    font-size: clamp(2.75rem, 16vw, 4.5rem);
+  }
+
+  .hero-quotes {
+    max-width: min(95vw, 380px);
+  }
+
+  .horn-wrap {
+    margin-top: 0.4rem;
+  }
+
+  .culture-tabs {
+    margin-top: 0.45rem;
+  }
+
+  .scroll-hint {
+    display: block;
+    margin-top: 0.35rem;
+  }
+
+  .horn-en { display: none; }
+
+  /* Compact player — slightly raised so bus stays visible */
   .player-glass.player-fixed {
+    bottom: 5vh;
     width: calc(100% - 0.75rem);
     max-width: none;
-    bottom: 0.85rem;
-    padding: 0.32rem 0.4rem;
+    padding: 0.32rem 0.45rem;
     border-radius: 18px;
   }
 
   .player-compact {
     flex-wrap: nowrap;
     gap: 0.3rem;
+    align-items: center;
   }
 
   .player-track-block {
@@ -1381,6 +1428,12 @@ a:hover { text-decoration: underline; }
 
   .progress-inline #progress-bar {
     max-width: none;
+    height: 3px;
+  }
+
+  .progress-inline #progress-bar::-webkit-slider-thumb {
+    width: 9px;
+    height: 9px;
   }
 
   .cd-wrap.cd-sm {
@@ -1402,6 +1455,7 @@ a:hover { text-decoration: underline; }
 
   .volume-compact #volume-bar {
     width: 32px;
+    height: 3px;
   }
 
   .volume-compact span {
@@ -1409,19 +1463,11 @@ a:hover { text-decoration: underline; }
   }
 
   #now-playing-title { font-size: 0.7rem; }
-  #now-playing-artist { font-size: 0.58rem; }
+  #now-playing-artist { font-size: 0.58rem; margin-bottom: 0.1rem; }
   .time-combined { font-size: 0.54rem; }
 
-  #hero-title { font-size: clamp(2.75rem, 16vw, 4.5rem); }
-
-  .hero-quotes {
-    max-width: min(95vw, 380px);
-  }
-
-  .horn-en { display: none; }
-
   .scroll-page {
-    padding-bottom: calc(var(--player-h) + 2rem);
+    padding-bottom: calc(var(--player-h) + 6vh);
   }
 
   .scroll-section {
@@ -1430,18 +1476,18 @@ a:hover { text-decoration: underline; }
     padding: 1.25rem;
   }
 
-  .scroll-hint {
-    display: block;
-  }
-
   .site-watermark {
     font-size: 0.55rem;
     right: 0.5rem;
-    bottom: calc(var(--player-h) + 0.25rem);
+    bottom: calc(5vh + var(--player-h) + 0.3rem);
   }
 }
 
 @media (min-width: 769px) {
+  .page-hero {
+    padding-bottom: calc(var(--player-h) + 1rem);
+  }
+
   .scroll-hint {
     display: none;
   }

@@ -6,7 +6,12 @@
   <meta name="description" content="राहगीर — नेपाली, पंजाबी और भोजपुरी गाने। हिमालय से गंगा तक, एक रात भर की सफर।" />
   <meta property="og:title" content="राहगीर — Nepali, Punjabi & Bhojpuri Radio" />
   <meta property="og:description" content="नेपाली, पंजाबी और भोजपुरी गाने — बस की सीट पर, रात भर।" />
-  <meta name="theme-color" content="#1a0f0a" />
+  <meta property="og:url" content="https://rahgir-beige.vercel.app/" />
+  <link rel="canonical" href="https://rahgir-beige.vercel.app/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://www.youtube.com" />
+  <link rel="dns-prefetch" href="https://i.ytimg.com" />
   <title>राहगीर — Nepali, Punjabi & Bhojpuri Radio</title>
   <link rel="stylesheet" href="/src/styles.css" />
 </head>
@@ -63,7 +68,7 @@
     </div>
   </div>
 
-  <!-- Details page — scroll down to see -->
+  <!-- Details page — scroll down to see (layer above background, below player) -->
   <div class="scroll-page" id="scroll-page">
     <section class="scroll-section" id="culture-section">
       <h2 id="culture-significance-title">संस्कृति</h2>
@@ -94,7 +99,7 @@
       <div class="footer-links">
         <a href="/playlists.html">प्लेलिस्ट</a>
         <a href="/songs.html">सभी गाने</a>
-        <a href="https://raahgir.wtf" target="_blank" rel="noopener">raahgir.wtf</a>
+        <a href="https://rahgir-beige.vercel.app" target="_blank" rel="noopener">rahgir-beige.vercel.app</a>
       </div>
       <div class="footer-credits">
         <p>Made with ❤️ by <strong>Aditya Kumar</strong> · <a href="https://github.com/Adi51244" target="_blank" rel="noopener">@Adi51244</a></p>
@@ -104,7 +109,7 @@
     </footer>
   </div>
 
-  <!-- Compact fixed player — near wheel / bottom -->
+  <!-- Music player — top layer, always above scroll details -->
   <div class="player-glass player-fixed" role="region" aria-label="म्यूज़िक प्लेयर">
     <div class="player-compact">
       <div class="cd-wrap cd-sm">
@@ -196,7 +201,7 @@
           </div>
         </div>
         <div class="ticket-qr-row">
-          <strong style="font-size:0.85rem">raahgir.wtf</strong>
+          <strong id="ticket-url" style="font-size:0.85rem">rahgir-beige.vercel.app</strong>
           <canvas id="ticket-qr" aria-label="QR code"></canvas>
         </div>
         <div class="ticket-footer">
