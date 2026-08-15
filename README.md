@@ -1,95 +1,86 @@
-# राहगीर — Nepali, Punjabi & Bhojpuri Music Radio
+# <img src="public/favicon.svg" width="36" height="36" alt="राहगीर Logo" style="vertical-align:middle;margin-right:8px" /> राहगीर — 5 Cultures & Moods Bus Radio
 
 🌐 **Live Website**: [https://rahgir-beige.vercel.app/](https://rahgir-beige.vercel.app/)
 
-A viral-style music radio website inspired by [busdriver.wtf](https://busdriver.wtf/) and [deluxesalon.in](https://deluxesalon.in/). Sit on a virtual bus seat, pick a culture, and listen all night — from the Himalayas to the Ganges.
+A viral-style highway bus music radio website inspired by [busdriver.wtf](https://busdriver.wtf/) and [deluxesalon.in](https://deluxesalon.in/). Sit on a virtual bus passenger seat, pick your culture and mood, and listen to nonstop music all night — across the Himalayas, Punjab, Delhi, Haryana, and the Ganges.
 
-## Home — Nepal (default)
+---
 
-![Nepal home screen](docs/screenshots/nepal-home.png)
+## 🚍 5 Cultures & Routes
 
-## Features
+| Culture | Service | Route | Moods Available |
+|---------|---------|-------|-----------------|
+| **🌾 पंजाबी (Default)** | सरहद सेवा | अमृतसर – चंडीगढ़ – दिल्ली | 🌾 ऑल-टाइम हिट्स, ❤️ Love, 💔 Sad |
+| **📻 हिंदी** | राजधानी सेवा | दिल्ली – आगरा – जयपुर | ❤️ Love, 📻 Old Classics, 🎉 Party |
+| **🚜 हरियाणवी** | देसी सेवा | रोहतक – गुरुग्राम – हिसार | 🎉 Party, ❤️ Love |
+| **🪔 भोजपुरी** | गंगा सेवा | पटना – वाराणसी – गंगा घाट | 🪔 गंगा सेवा हिट्स, 🪔 छठ Special |
+| **🇳🇵 नेपाली** | हिमालय सेवा | काठमाण्डौ – पोखरा – बागलुङ | 🏔️ हिमालयन धुन |
 
-- **राहगीर hero** — each letter (रा · ह · गी · र) dances separately when the horn plays
-- **Culture-specific quotes** above the title (Nepali, Punjabi, Bhojpuri)
-- **3 cultures**: Nepali (default), Punjabi, Bhojpuri — each with its own route, slideshow & playlist
-- **Compact glass player** fixed at the bottom (near the bus wheel) — play, seek, shuffle, volume, queue
-- **Horn OK Please** — bus horn over the music with volume ducking + stop button
-- **Real-time clock** + Nepal altitude badge under song count
-- **Scrollable culture page** — significance, highlights, song info (bus background stays visible)
-- **Share ticket** — PNG image + QR code pointing directly to [rahgir-beige.vercel.app](https://rahgir-beige.vercel.app/)
-- **Rotating CD** with real album art from YouTube
-- **High-performance slideshow** — WebP optimized backgrounds with just-in-time prefetching
-- **Vercel Analytics** integrated for tracking visitors and listening metrics
-- **No autoplay** — music starts only when you press play
-- **Playlists & Songs** pages with Hindi UI labels
+---
 
-## Asset folders
+## ✨ Features
 
-Background art lives under `Asset/`:
+- **Dynamic Mood Selector** — Switch instantly between Love, Old Classics, Party, Sad, and Chhath Special mood playlists right under the culture tabs.
+- **Surprise Song on Every Visit** — Every time you visit or switch cultures/moods, a fresh random surprise track from that playlist is cued up.
+- **Continuous Background Playback** — Browse Playlists and Songs views without interrupting audio playback.
+- **Interactive Horn System** — Realistic Indian & regional bus horns (`🚌 हॉर्न OK Please`) that dynamically duck background music volume while playing.
+- **Shareable Travel Ticket** — Generates a retro bus boarding ticket with live route info, song title, departure time, seat number, and QR code pointing to [rahgir-beige.vercel.app](https://rahgir-beige.vercel.app/).
+- **Lightweight Optimized Scenery** — Fullscreen 15s rotating cross-fade slideshow with WebP backgrounds and lazy prefetching.
+- **Audio Visualizer / Rotating CD** — Real album art from YouTube with rotating animation.
+- **Real-Time Live Clock & Altitude** — Live Hindi time format and regional mountain elevation metrics.
+- **Vercel Analytics Integrated** — Built-in traffic and interaction analytics.
 
-| Culture | Web (16:9) | Mobile (9:16) |
-|---------|------------|---------------|
-| Nepal | `Asset/Nepal/Web/` | `Asset/Nepal/Mobile/` |
-| Punjab | `Asset/Punjab/Web/` | `Asset/Punjab/Mobile/` |
-| Bihar (Bhojpuri) | `Asset/Bihar/Web/` | `Asset/Bihar/Mobile/` |
+---
 
-Example Nepal scenery:
+## 📁 Asset Folders
 
-![Nepal roadway](docs/screenshots/nepal-scenery.png)
+Roadway scenery images for Web (16:9) and Mobile (9:16):
 
-Horn sounds: `Asset/Horn Sound/*.mp3`
-
-## Quick start
-
-```bash
-npm install
-npm run dev
+```
+Asset/
+├── Punjab/     # Web & Mobile scenery
+├── Hindi/      # Web & Mobile scenery
+├── Haryana/    # Web & Mobile scenery
+├── Bihar/      # Web & Mobile scenery
+├── Nepal/      # Web & Mobile scenery
+└── Horn Sound/ # Regional bus horn MP3s
 ```
 
-Open http://localhost:5173
+---
 
-## Update playlists
-
-Requires [yt-dlp](https://github.com/yt-dlp/yt-dlp):
-
-```bash
-npm run fetch-playlists
-```
-
-## Deploy
-
-```bash
-npm run build
-```
-
-Upload the `dist/` folder to static hosts (Vercel, Netlify, Cloudflare Pages, etc.).
-
-## Keyboard shortcuts
+## ⌨️ Keyboard Shortcuts
 
 | Key | Action |
 |-----|--------|
-| Space | Play / Pause |
-| ← → | Prev / Next track |
-| N / P | Next / Prev track |
-| Q | Queue |
-| T | Ticket (share PNG) |
-| H | Horn |
+| **Space** | Play / Pause music |
+| **← / →** | Previous / Next song |
+| **N / P** | Next / Previous track |
+| **Q** | Open / Close Queue panel |
+| **T** | Generate & Share Ticket |
+| **H** | Blow Bus Horn |
+| **Esc** | Close overlays & modals |
 
-## Share ticket
+---
 
-Press **T** or tap the ticket button. **Share** exports a PNG of your ticket (route, seat, song, QR). On mobile it uses the native share sheet with the image; on desktop it downloads the PNG and copies the link (`https://rahgir-beige.vercel.app`).
+## 🛠️ Local Development
 
-## Playlists
+```bash
+# Install dependencies
+npm install
 
-- Nepali: [YouTube Music](https://music.youtube.com/playlist?list=PLETcP_FdLOGY)
-- Punjabi: [YouTube Music](https://music.youtube.com/playlist?list=PLKGdFvuCgQRQ)
-- Bhojpuri: [YouTube Music](https://music.youtube.com/playlist?list=PLVTwrTzYCvPU)
+# Start local development server
+npm run dev
 
-## Contact
+# Build production bundle
+npm run build
+```
 
-Made with ❤️ by **[Aditya Kumar](https://github.com/Adi51244)** ([@Adi51244](https://github.com/Adi51244)) — kumarsinghu0@gmail.com
+---
 
-Repository: [github.com/Adi51244/Rahgir](https://github.com/Adi51244/Rahgir)
+## 📬 Contact & Credits
 
-Audio plays via YouTube's embedded player. Rights remain with labels, composers and performers.
+- **Author**: **[Aditya Kumar](https://github.com/Adi51244)** ([@Adi51244](https://github.com/Adi51244))
+- **Email**: [goswamiadi79@gmail.com](mailto:goswamiadi79@gmail.com)
+- **Repository**: [https://github.com/Adi51244/Rahgir](https://github.com/Adi51244/Rahgir)
+
+*Audio playback streams via YouTube embedded player. All musical rights belong to their respective record labels, artists, and creators.*

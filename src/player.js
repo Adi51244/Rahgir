@@ -11,6 +11,7 @@ import {
   playTrackAt,
   subscribe,
   setTracks,
+  setMood,
 } from './store.js';
 import { CULTURES } from './config.js';
 
@@ -200,9 +201,21 @@ export function playAt(index) {
   startPlayback();
 }
 
-export async function loadCultureTracks(cultureId, initialIndex = null) {
+export async function loadCultureTracks(cultureId, moodId = null, initialIndex = null) {
   const meta = CULTURES[cultureId];
-  const res = await fetch(meta.dataFile);
+  if (!meta) return [];
+
+  let targetFile = meta.dataFile;
+  if (meta.moods && meta.moods.length > 0) {
+    let matchedMood = meta.moods.find((m) => m.id === moodId);
+    if (!matchedMood) {
+      matchedMood = meta.moods[0];
+    }
+    targetFile = matchedMood.file;
+    setMood(matchedMood.id);
+  }
+
+  const res = await fetch(targetFile);
   const data = await res.json();
   setTracks(data.tracks, initialIndex);
   return data.tracks;

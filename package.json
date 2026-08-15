@@ -1,8 +1,8 @@
 {
   "name": "raahgir",
   "version": "1.0.0",
-  "description": "राहगीर — Nepali, Punjabi & Bhojpuri music radio",
-  "author": "Aditya Kumar <kumarsinghu0@gmail.com> (https://github.com/Adi51244)",
+  "description": "राहगीर — 5 Cultures & Moods Highway Bus Music Radio",
+  "author": "Aditya Kumar <goswamiadi79@gmail.com> (https://github.com/Adi51244)",
   "type": "module",
   "scripts": {
     "dev": "vite",

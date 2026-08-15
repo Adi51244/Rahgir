@@ -4,6 +4,7 @@ const listeners = new Set();
 
 const state = {
   culture: DEFAULT_CULTURE,
+  activeMood: 'default',
   tracks: [],
   currentIndex: 0,
   isPlaying: false,
@@ -29,13 +30,20 @@ function emit() {
   listeners.forEach((fn) => fn(getState()));
 }
 
-export function setCulture(culture) {
+export function setCulture(culture, mood = null) {
   state.culture = culture;
+  if (mood) state.activeMood = mood;
   state.currentIndex = 0;
   state.progress = 0;
   state.duration = 0;
-  state.isPlaying = false;
-  state.userStarted = false;
+  emit();
+}
+
+export function setMood(mood) {
+  state.activeMood = mood;
+  state.currentIndex = 0;
+  state.progress = 0;
+  state.duration = 0;
   emit();
 }
 

@@ -466,6 +466,48 @@ a:hover {
   color: var(--gold);
 }
 
+/* ── Mood Chips / Selector ── */
+.mood-chips {
+  display: flex;
+  gap: 0.35rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0.45rem;
+  max-width: min(92vw, 680px);
+}
+
+.mood-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(20, 12, 8, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 235, 215, 0.12);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mood-chip:hover {
+  color: var(--text);
+  border-color: rgba(251, 192, 45, 0.35);
+  background: rgba(35, 20, 14, 0.6);
+}
+
+.mood-chip.active {
+  color: #1a0f0a;
+  background: var(--gold);
+  border-color: var(--gold);
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(251, 192, 45, 0.35);
+}
+
 /* ── Compact fixed player (bottom, near wheel) ── */
 .player-glass.player-fixed {
   position: fixed;

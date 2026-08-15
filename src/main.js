@@ -33,6 +33,7 @@ let clockTimer = null;
 async function boot() {
   const params = new URLSearchParams(window.location.search);
   const cultureParam = params.get('culture');
+  const moodParam = params.get('mood');
   const trackParam = params.get('track');
   const viewParam = params.get('view');
 
@@ -44,7 +45,7 @@ async function boot() {
   document.querySelectorAll('.culture-tab').forEach((t) => {
     t.classList.toggle('active', t.dataset.culture === startCulture);
   });
-  setCulture(startCulture);
+  setCulture(startCulture, moodParam);
 
   initSlideshow(slideshow, startCulture);
   initHorn(heroTitle);
@@ -55,7 +56,8 @@ async function boot() {
   initClock();
   initNavigationViews();
 
-  await loadCultureTracks(startCulture);
+  await loadCultureTracks(startCulture, moodParam);
+  renderMoodChips();
 
   if (trackParam !== null) {
     const idx = parseInt(trackParam, 10);
@@ -92,6 +94,37 @@ function updateClock() {
   });
 }
 
+function renderMoodChips() {
+  const container = document.getElementById('mood-chips');
+  if (!container) return;
+  const currentCulture = getState().culture;
+  const currentMood = getState().activeMood;
+  const meta = CULTURES[currentCulture];
+  if (!meta || !meta.moods || meta.moods.length <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = '';
+  meta.moods.forEach((m) => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = `mood-chip ${m.id === currentMood ? 'active' : ''}`;
+    chip.textContent = m.label;
+    chip.addEventListener('click', async () => {
+      if (m.id === getState().activeMood) return;
+      const wasPlaying = getState().isPlaying;
+      await loadCultureTracks(currentCulture, m.id);
+      renderMoodChips();
+      if (wasPlaying) {
+        startPlayback();
+      }
+      renderUI();
+    });
+    container.appendChild(chip);
+  });
+}
+
 function initCultureTabs() {
   document.querySelectorAll('.culture-tab').forEach((tab) => {
     tab.addEventListener('click', async () => {
@@ -105,6 +138,7 @@ function initCultureTabs() {
       setCulture(id);
       setSlideCulture(id, document.getElementById('slideshow'));
       await loadCultureTracks(id);
+      renderMoodChips();
       if (wasPlaying) {
         startPlayback();
       }
@@ -179,44 +213,52 @@ async function openPlaylistsView(initialCulture = null) {
   if (!playlistsLoaded && cardsEl) {
     cardsEl.innerHTML = '';
     for (const [id, meta] of Object.entries(CULTURES)) {
-      const res = await fetch(meta.dataFile);
-      const data = await res.json();
-      const thumb = data.tracks[0]?.thumbnail || '';
+      const moodsList = meta.moods && meta.moods.length > 0 ? meta.moods : [{ id: 'default', label: meta.label, file: meta.dataFile, ytMusic: meta.ytMusic }];
+      for (const mood of moodsList) {
+        try {
+          const res = await fetch(mood.file);
+          const data = await res.json();
+          const thumb = data.tracks[0]?.thumbnail || '';
 
-      const card = document.createElement('a');
-      card.className = 'playlist-card';
-      card.href = '#';
-      card.innerHTML = `
-        <img src="${thumb}" alt="${meta.label}" loading="lazy" />
-        <div>
-          <h3>${meta.emoji} ${meta.label}</h3>
-          <p>${meta.route}</p>
-          <p>${data.tracks.length} गाने · ${meta.boarding}</p>
-        </div>
-      `;
-      card.addEventListener('click', (e) => {
-        e.preventDefault();
-        renderPlaylistDetail(id, meta, data.tracks, detailEl);
-      });
-      cardsEl.appendChild(card);
+          const card = document.createElement('a');
+          card.className = 'playlist-card';
+          card.href = '#';
+          card.innerHTML = `
+            <img src="${thumb}" alt="${meta.label}" loading="lazy" />
+            <div>
+              <h3>${meta.emoji} ${meta.label} — ${mood.label}</h3>
+              <p>${meta.route}</p>
+              <p>${data.tracks.length} गाने · ${meta.boarding}</p>
+            </div>
+          `;
+          card.addEventListener('click', (e) => {
+            e.preventDefault();
+            renderPlaylistDetail(id, mood.id, meta, mood, data.tracks, detailEl);
+          });
+          cardsEl.appendChild(card);
+        } catch (err) {
+          console.error(err);
+        }
+      }
     }
     playlistsLoaded = true;
   }
 
   if (initialCulture && CULTURES[initialCulture] && detailEl) {
     const meta = CULTURES[initialCulture];
-    const res = await fetch(meta.dataFile);
+    const defaultMood = meta.moods?.[0] || { id: 'default', label: meta.label, file: meta.dataFile, ytMusic: meta.ytMusic };
+    const res = await fetch(defaultMood.file);
     const data = await res.json();
-    renderPlaylistDetail(initialCulture, meta, data.tracks, detailEl);
+    renderPlaylistDetail(initialCulture, defaultMood.id, meta, defaultMood, data.tracks, detailEl);
   }
 }
 
-function renderPlaylistDetail(id, meta, tracks, detailEl) {
+function renderPlaylistDetail(cultureId, moodId, meta, mood, tracks, detailEl) {
   if (!detailEl) return;
   detailEl.innerHTML = `
-    <h2 class="section-title" style="margin-top:1.5rem;font-size:1.4rem">${meta.emoji} ${meta.label} — ${tracks.length} गाने</h2>
+    <h2 class="section-title" style="margin-top:1.5rem;font-size:1.35rem">${meta.emoji} ${meta.label} (${mood.label}) — ${tracks.length} गाने</h2>
     <p style="color:var(--text-muted);margin-bottom:1rem;font-size:0.85rem">
-      <a href="${meta.ytMusic}" target="_blank" rel="noopener">YouTube Music पर सुनें ↗</a>
+      <a href="${mood.ytMusic || meta.ytMusic}" target="_blank" rel="noopener">YouTube Music पर सुनें ↗</a>
     </p>
     <ul class="song-list"></ul>
   `;
@@ -235,7 +277,7 @@ function renderPlaylistDetail(id, meta, tracks, detailEl) {
       <span class="dur">${formatTime(track.duration)}</span>
     `;
     li.addEventListener('click', () => {
-      selectTrackAndPlay(id, i);
+      selectTrackAndPlay(cultureId, moodId, i);
     });
     list.appendChild(li);
   });
@@ -254,37 +296,44 @@ async function openSongsView() {
   const container = document.getElementById('view-songs-container');
   if (!songsLoaded && container) {
     container.innerHTML = '';
-    for (const [id, meta] of Object.entries(CULTURES)) {
-      const res = await fetch(meta.dataFile);
-      const data = await res.json();
+    for (const [cultureId, meta] of Object.entries(CULTURES)) {
+      const moodsList = meta.moods && meta.moods.length > 0 ? meta.moods : [{ id: 'default', label: meta.label, file: meta.dataFile, ytMusic: meta.ytMusic }];
+      for (const mood of moodsList) {
+        try {
+          const res = await fetch(mood.file);
+          const data = await res.json();
 
-      const section = document.createElement('div');
-      section.style.marginBottom = '2rem';
-      section.innerHTML = `<h2 class="section-title" style="margin-bottom:0.75rem;font-size:1.3rem">${meta.emoji} ${meta.label} (${data.tracks.length} गाने)</h2>`;
+          const section = document.createElement('div');
+          section.style.marginBottom = '2rem';
+          section.innerHTML = `<h2 class="section-title" style="margin-bottom:0.75rem;font-size:1.25rem">${meta.emoji} ${meta.label} — ${mood.label} (${data.tracks.length} गाने)</h2>`;
 
-      const ul = document.createElement('ul');
-      ul.className = 'song-list';
+          const ul = document.createElement('ul');
+          ul.className = 'song-list';
 
-      data.tracks.forEach((track, i) => {
-        const li = document.createElement('li');
-        li.style.cursor = 'pointer';
-        li.innerHTML = `
-          <span class="num">${i + 1}</span>
-          <img src="${track.thumbnail}" alt="" loading="lazy" />
-          <div class="info">
-            <div class="title">${track.title}</div>
-            <div class="artist">${track.artist}</div>
-          </div>
-          <span class="dur">${formatTime(track.duration)}</span>
-        `;
-        li.addEventListener('click', () => {
-          selectTrackAndPlay(id, i);
-        });
-        ul.appendChild(li);
-      });
+          data.tracks.forEach((track, i) => {
+            const li = document.createElement('li');
+            li.style.cursor = 'pointer';
+            li.innerHTML = `
+              <span class="num">${i + 1}</span>
+              <img src="${track.thumbnail}" alt="" loading="lazy" />
+              <div class="info">
+                <div class="title">${track.title}</div>
+                <div class="artist">${track.artist}</div>
+              </div>
+              <span class="dur">${formatTime(track.duration)}</span>
+            `;
+            li.addEventListener('click', () => {
+              selectTrackAndPlay(cultureId, mood.id, i);
+            });
+            ul.appendChild(li);
+          });
 
-      section.appendChild(ul);
-      container.appendChild(section);
+          section.appendChild(ul);
+          container.appendChild(section);
+        } catch (err) {
+          console.error(err);
+        }
+      }
     }
     songsLoaded = true;
   }
@@ -298,15 +347,19 @@ function closeAllViews() {
   updateNavActive('radio');
 }
 
-async function selectTrackAndPlay(cultureId, trackIndex) {
+async function selectTrackAndPlay(cultureId, moodId, trackIndex) {
   const slideshow = document.getElementById('slideshow');
-  if (cultureId !== getState().culture) {
-    setCulture(cultureId);
+  const needsCultureChange = cultureId !== getState().culture;
+  const needsMoodChange = moodId !== getState().activeMood;
+
+  if (needsCultureChange || needsMoodChange) {
+    setCulture(cultureId, moodId);
     setSlideCulture(cultureId, slideshow);
     document.querySelectorAll('.culture-tab').forEach((t) => {
       t.classList.toggle('active', t.dataset.culture === cultureId);
     });
-    await loadCultureTracks(cultureId, trackIndex);
+    await loadCultureTracks(cultureId, moodId, trackIndex);
+    renderMoodChips();
   } else {
     playTrackAt(trackIndex);
   }
