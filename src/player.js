@@ -200,11 +200,11 @@ export function playAt(index) {
   startPlayback();
 }
 
-export async function loadCultureTracks(cultureId) {
+export async function loadCultureTracks(cultureId, initialIndex = null) {
   const meta = CULTURES[cultureId];
   const res = await fetch(meta.dataFile);
   const data = await res.json();
-  setTracks(data.tracks);
+  setTracks(data.tracks, initialIndex);
   return data.tracks;
 }
 

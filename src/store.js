@@ -39,10 +39,19 @@ export function setCulture(culture) {
   emit();
 }
 
-export function setTracks(tracks) {
+export function setTracks(tracks, initialIndex = null) {
   state.tracks = tracks;
-  state.currentIndex = 0;
+  if (tracks && tracks.length > 0) {
+    if (initialIndex !== null && initialIndex >= 0 && initialIndex < tracks.length) {
+      state.currentIndex = initialIndex;
+    } else {
+      state.currentIndex = Math.floor(Math.random() * tracks.length);
+    }
+  } else {
+    state.currentIndex = 0;
+  }
   state.shuffledOrder = tracks.map((_, i) => i);
+  state.progress = 0;
   emit();
 }
 

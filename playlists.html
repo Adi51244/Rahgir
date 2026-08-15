@@ -23,6 +23,11 @@
     <div class="playlist-cards" id="playlist-cards"></div>
     <div id="playlist-detail"></div>
   </div>
-  <script type="module" src="/src/playlists.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const culture = params.get('culture');
+    const target = culture ? `/?view=playlists&culture=${culture}` : '/?view=playlists';
+    window.location.replace(target);
+  </script>
 </body>
 </html>

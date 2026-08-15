@@ -22,6 +22,11 @@
     <p class="subtitle">नेपाली · पंजाबी · भोजपुरी — सभी ट्रैक एक जगह</p>
     <div id="songs-container"></div>
   </div>
-  <script type="module" src="/src/songs.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const culture = params.get('culture');
+    const target = culture ? `/?view=songs&culture=${culture}` : '/?view=songs';
+    window.location.replace(target);
+  </script>
 </body>
 </html>

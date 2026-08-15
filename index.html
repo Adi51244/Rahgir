@@ -45,9 +45,9 @@
     <div class="page page-hero">
       <header class="top-bar">
         <nav class="nav-links">
-          <a href="/" class="active">रेडियो</a>
-          <a href="/playlists.html">प्लेलिस्ट</a>
-          <a href="/songs.html">गाने</a>
+          <a href="/" class="active" id="nav-radio">रेडियो</a>
+          <a href="/playlists.html" id="nav-playlists">प्लेलिस्ट</a>
+          <a href="/songs.html" id="nav-songs">गाने</a>
         </nav>
         <div class="top-meta">
           <span id="live-clock" class="live-clock">--:--</span>
@@ -61,15 +61,15 @@
       <main class="hero">
         <div class="hero-title-wrap">
           <div class="hero-quotes" aria-hidden="true">
-            <span class="hero-quote hero-quote-left" id="hero-quote-left">रात भर · हिमालय से</span>
-            <span class="hero-quote hero-quote-right" id="hero-quote-right">पोखरा तक</span>
+            <span class="hero-quote hero-quote-left" id="hero-quote-left">सरहद से · अमृतसर</span>
+            <span class="hero-quote hero-quote-right" id="hero-quote-right">दिल्ली तक</span>
           </div>
           <h1 id="hero-title" aria-label="राहगीर">
             <span class="letter" data-part="ra">रा</span><span class="letter" data-part="ha">ह</span><span class="letter" data-part="gi">गी</span><span class="letter" data-part="r">र</span>
           </h1>
         </div>
-        <p id="route-label">काठमाण्डौ – पोखरा – बागलुङ</p>
-        <p id="culture-sub">नेपाली · रात भर सफर</p>
+        <p id="route-label">अमृतसर – चंडीगढ़ – दिल्ली</p>
+        <p id="culture-sub">पंजाबी · रात भर सफर</p>
 
         <div class="horn-wrap">
           <button id="horn-btn" type="button" aria-label="हॉर्न बजाएं">
@@ -80,8 +80,8 @@
         </div>
 
         <div class="culture-tabs" role="tablist">
-          <button class="culture-tab active" data-culture="nepali" role="tab">🇳🇵 नेपाली</button>
-          <button class="culture-tab" data-culture="punjabi" role="tab">🌾 पंजाबी</button>
+          <button class="culture-tab active" data-culture="punjabi" role="tab">🌾 पंजाबी</button>
+          <button class="culture-tab" data-culture="nepali" role="tab">🇳🇵 नेपाली</button>
           <button class="culture-tab" data-culture="bhojpuri" role="tab">🪔 भोजपुरी</button>
         </div>
 
@@ -174,6 +174,33 @@
     <span>←→ · ट्रैक</span>
     <span>Q · कतार</span>
     <span>H · हॉर्न</span>
+  </div>
+
+  <!-- In-app Playlists View (Seamless background audio) -->
+  <div id="playlists-view" class="view-overlay" aria-hidden="true" role="dialog" aria-label="प्लेलिस्ट">
+    <div class="view-content list-page">
+      <div class="view-header">
+        <button class="view-back-btn back-home" type="button">← रेडियो पर वापस</button>
+        <button class="view-close-btn" aria-label="बंद करें">×</button>
+      </div>
+      <h1>प्लेलिस्ट</h1>
+      <p class="subtitle">तीन सफर · तीन संस्कृतियाँ</p>
+      <div class="playlist-cards" id="view-playlist-cards"></div>
+      <div id="view-playlist-detail"></div>
+    </div>
+  </div>
+
+  <!-- In-app Songs View (Seamless background audio) -->
+  <div id="songs-view" class="view-overlay" aria-hidden="true" role="dialog" aria-label="सभी गाने">
+    <div class="view-content list-page">
+      <div class="view-header">
+        <button class="view-back-btn back-home" type="button">← रेडियो पर वापस</button>
+        <button class="view-close-btn" aria-label="बंद करें">×</button>
+      </div>
+      <h1>सभी गाने</h1>
+      <p class="subtitle">पंजाबी · नेपाली · भोजपुरी — सभी ट्रैक एक जगह</p>
+      <div id="view-songs-container"></div>
+    </div>
   </div>
 
   <!-- Ticket modal -->

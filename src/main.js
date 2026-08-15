@@ -34,18 +34,17 @@ async function boot() {
   const params = new URLSearchParams(window.location.search);
   const cultureParam = params.get('culture');
   const trackParam = params.get('track');
+  const viewParam = params.get('view');
 
   const slideshow = document.getElementById('slideshow');
   const heroTitle = document.getElementById('hero-title');
 
   const startCulture = CULTURES[cultureParam] ? cultureParam : DEFAULT_CULTURE;
 
-  if (cultureParam && CULTURES[cultureParam]) {
-    document.querySelectorAll('.culture-tab').forEach((t) => {
-      t.classList.toggle('active', t.dataset.culture === cultureParam);
-    });
-    setCulture(cultureParam);
-  }
+  document.querySelectorAll('.culture-tab').forEach((t) => {
+    t.classList.toggle('active', t.dataset.culture === startCulture);
+  });
+  setCulture(startCulture);
 
   initSlideshow(slideshow, startCulture);
   initHorn(heroTitle);
@@ -54,6 +53,7 @@ async function boot() {
   initControls();
   initKeyboard();
   initClock();
+  initNavigationViews();
 
   await loadCultureTracks(startCulture);
 
@@ -67,6 +67,12 @@ async function boot() {
   await initPlayer();
   subscribe(renderUI);
   renderUI();
+
+  if (viewParam === 'playlists') {
+    openPlaylistsView(cultureParam);
+  } else if (viewParam === 'songs') {
+    openSongsView();
+  }
 }
 
 function initClock() {
@@ -95,12 +101,218 @@ function initCultureTabs() {
       document.querySelectorAll('.culture-tab').forEach((t) => t.classList.remove('active'));
       tab.classList.add('active');
 
+      const wasPlaying = getState().isPlaying;
       setCulture(id);
       setSlideCulture(id, document.getElementById('slideshow'));
       await loadCultureTracks(id);
+      if (wasPlaying) {
+        startPlayback();
+      }
       renderUI();
     });
   });
+}
+
+let playlistsLoaded = false;
+let songsLoaded = false;
+
+function initNavigationViews() {
+  const navRadio = document.getElementById('nav-radio');
+  const navPlaylists = document.getElementById('nav-playlists');
+  const navSongs = document.getElementById('nav-songs');
+  const playlistsView = document.getElementById('playlists-view');
+  const songsView = document.getElementById('songs-view');
+
+  navRadio?.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeAllViews();
+  });
+
+  navPlaylists?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openPlaylistsView();
+  });
+
+  navSongs?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openSongsView();
+  });
+
+  document.querySelectorAll('.view-close-btn, .view-back-btn').forEach((btn) => {
+    btn.addEventListener('click', () => closeAllViews());
+  });
+
+  playlistsView?.addEventListener('click', (e) => {
+    if (e.target === playlistsView) closeAllViews();
+  });
+
+  songsView?.addEventListener('click', (e) => {
+    if (e.target === songsView) closeAllViews();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (playlistsView?.classList.contains('open') || songsView?.classList.contains('open')) {
+        closeAllViews();
+      }
+    }
+  });
+}
+
+function updateNavActive(activeId) {
+  document.getElementById('nav-radio')?.classList.toggle('active', activeId === 'radio');
+  document.getElementById('nav-playlists')?.classList.toggle('active', activeId === 'playlists');
+  document.getElementById('nav-songs')?.classList.toggle('active', activeId === 'songs');
+}
+
+async function openPlaylistsView(initialCulture = null) {
+  const modal = document.getElementById('playlists-view');
+  if (!modal) return;
+  document.getElementById('songs-view')?.classList.remove('open');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  updateNavActive('playlists');
+
+  const cardsEl = document.getElementById('view-playlist-cards');
+  const detailEl = document.getElementById('view-playlist-detail');
+
+  if (!playlistsLoaded && cardsEl) {
+    cardsEl.innerHTML = '';
+    for (const [id, meta] of Object.entries(CULTURES)) {
+      const res = await fetch(meta.dataFile);
+      const data = await res.json();
+      const thumb = data.tracks[0]?.thumbnail || '';
+
+      const card = document.createElement('a');
+      card.className = 'playlist-card';
+      card.href = '#';
+      card.innerHTML = `
+        <img src="${thumb}" alt="${meta.label}" loading="lazy" />
+        <div>
+          <h3>${meta.emoji} ${meta.label}</h3>
+          <p>${meta.route}</p>
+          <p>${data.tracks.length} गाने · ${meta.boarding}</p>
+        </div>
+      `;
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        renderPlaylistDetail(id, meta, data.tracks, detailEl);
+      });
+      cardsEl.appendChild(card);
+    }
+    playlistsLoaded = true;
+  }
+
+  if (initialCulture && CULTURES[initialCulture] && detailEl) {
+    const meta = CULTURES[initialCulture];
+    const res = await fetch(meta.dataFile);
+    const data = await res.json();
+    renderPlaylistDetail(initialCulture, meta, data.tracks, detailEl);
+  }
+}
+
+function renderPlaylistDetail(id, meta, tracks, detailEl) {
+  if (!detailEl) return;
+  detailEl.innerHTML = `
+    <h2 class="section-title" style="margin-top:1.5rem;font-size:1.4rem">${meta.emoji} ${meta.label} — ${tracks.length} गाने</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem;font-size:0.85rem">
+      <a href="${meta.ytMusic}" target="_blank" rel="noopener">YouTube Music पर सुनें ↗</a>
+    </p>
+    <ul class="song-list"></ul>
+  `;
+
+  const list = detailEl.querySelector('.song-list');
+  tracks.forEach((track, i) => {
+    const li = document.createElement('li');
+    li.style.cursor = 'pointer';
+    li.innerHTML = `
+      <span class="num">${i + 1}</span>
+      <img src="${track.thumbnail}" alt="" loading="lazy" />
+      <div class="info">
+        <div class="title">${track.title}</div>
+        <div class="artist">${track.artist}</div>
+      </div>
+      <span class="dur">${formatTime(track.duration)}</span>
+    `;
+    li.addEventListener('click', () => {
+      selectTrackAndPlay(id, i);
+    });
+    list.appendChild(li);
+  });
+
+  detailEl.scrollIntoView({ behavior: 'smooth' });
+}
+
+async function openSongsView() {
+  const modal = document.getElementById('songs-view');
+  if (!modal) return;
+  document.getElementById('playlists-view')?.classList.remove('open');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  updateNavActive('songs');
+
+  const container = document.getElementById('view-songs-container');
+  if (!songsLoaded && container) {
+    container.innerHTML = '';
+    for (const [id, meta] of Object.entries(CULTURES)) {
+      const res = await fetch(meta.dataFile);
+      const data = await res.json();
+
+      const section = document.createElement('div');
+      section.style.marginBottom = '2rem';
+      section.innerHTML = `<h2 class="section-title" style="margin-bottom:0.75rem;font-size:1.3rem">${meta.emoji} ${meta.label} (${data.tracks.length} गाने)</h2>`;
+
+      const ul = document.createElement('ul');
+      ul.className = 'song-list';
+
+      data.tracks.forEach((track, i) => {
+        const li = document.createElement('li');
+        li.style.cursor = 'pointer';
+        li.innerHTML = `
+          <span class="num">${i + 1}</span>
+          <img src="${track.thumbnail}" alt="" loading="lazy" />
+          <div class="info">
+            <div class="title">${track.title}</div>
+            <div class="artist">${track.artist}</div>
+          </div>
+          <span class="dur">${formatTime(track.duration)}</span>
+        `;
+        li.addEventListener('click', () => {
+          selectTrackAndPlay(id, i);
+        });
+        ul.appendChild(li);
+      });
+
+      section.appendChild(ul);
+      container.appendChild(section);
+    }
+    songsLoaded = true;
+  }
+}
+
+function closeAllViews() {
+  document.getElementById('playlists-view')?.classList.remove('open');
+  document.getElementById('playlists-view')?.setAttribute('aria-hidden', 'true');
+  document.getElementById('songs-view')?.classList.remove('open');
+  document.getElementById('songs-view')?.setAttribute('aria-hidden', 'true');
+  updateNavActive('radio');
+}
+
+async function selectTrackAndPlay(cultureId, trackIndex) {
+  const slideshow = document.getElementById('slideshow');
+  if (cultureId !== getState().culture) {
+    setCulture(cultureId);
+    setSlideCulture(cultureId, slideshow);
+    document.querySelectorAll('.culture-tab').forEach((t) => {
+      t.classList.toggle('active', t.dataset.culture === cultureId);
+    });
+    await loadCultureTracks(cultureId, trackIndex);
+  } else {
+    playTrackAt(trackIndex);
+  }
+  closeAllViews();
+  playAt(trackIndex);
+  renderUI();
 }
 
 function setRangeFill(el, value, max) {
