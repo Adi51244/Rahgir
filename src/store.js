@@ -82,14 +82,6 @@ export function setVolume(volume) {
 
 export function toggleShuffle() {
   state.isShuffled = !state.isShuffled;
-  if (state.isShuffled) {
-    const order = [...state.tracks.keys()];
-    for (let i = order.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [order[i], order[j]] = [order[j], order[i]];
-    }
-    state.shuffledOrder = order;
-  }
   emit();
 }
 
@@ -99,13 +91,20 @@ export function setHornPlaying(playing) {
 }
 
 export function getCurrentTrack() {
-  const idx = state.isShuffled ? state.shuffledOrder[state.currentIndex] : state.currentIndex;
-  return state.tracks[idx] ?? null;
+  return state.tracks[state.currentIndex] ?? null;
 }
 
 export function nextTrack() {
   if (!state.tracks.length) return;
-  state.currentIndex = (state.currentIndex + 1) % state.tracks.length;
+  if (state.isShuffled && state.tracks.length > 1) {
+    let nextIdx;
+    do {
+      nextIdx = Math.floor(Math.random() * state.tracks.length);
+    } while (nextIdx === state.currentIndex);
+    state.currentIndex = nextIdx;
+  } else {
+    state.currentIndex = (state.currentIndex + 1) % state.tracks.length;
+  }
   state.progress = 0;
   emit();
 }

@@ -528,33 +528,91 @@ function renderUI() {
   renderQueue(state);
 }
 
+let lastQueueTracksKey = '';
+let lastActiveQueuePos = -1;
+let lastQueuePlayingState = null;
+
 function renderQueue(state) {
   const list = document.getElementById('queue-list');
   if (!list) return;
-  list.innerHTML = '';
 
-  const order = state.isShuffled
-    ? state.shuffledOrder
-    : state.tracks.map((_, i) => i);
+  const tracksKey = `${state.activeCulture}_${state.activeMood}_${state.tracks.length}`;
 
-  order.forEach((trackIdx, queuePos) => {
-    const track = state.tracks[trackIdx];
-    if (!track) return;
-    const li = document.createElement('li');
-    li.className = queuePos === state.currentIndex ? 'active' : '';
-    li.innerHTML = `
-      <img src="${track.thumbnail}" alt="" loading="lazy" />
-      <div class="queue-info">
-        <span class="queue-title">${track.title}</span>
-        <span class="queue-artist">${track.artist}</span>
-      </div>
-      <span class="queue-dur">${formatTime(track.duration)}</span>
-    `;
-    li.addEventListener('click', () => {
-      playAt(queuePos);
+  // If track list structure changed, rebuild DOM once
+  if (tracksKey !== lastQueueTracksKey) {
+    lastQueueTracksKey = tracksKey;
+    list.innerHTML = '';
+
+    state.tracks.forEach((track, pos) => {
+      if (!track) return;
+      const isActive = pos === state.currentIndex;
+      const li = document.createElement('li');
+      li.dataset.pos = pos;
+      li.className = isActive ? 'active' : '';
+      li.innerHTML = `
+        <img src="${track.thumbnail}" alt="" loading="lazy" />
+        <div class="queue-info">
+          <span class="queue-title">${track.title}</span>
+          <span class="queue-artist">${track.artist}</span>
+        </div>
+        <div class="queue-right">
+          ${
+            isActive
+              ? `<div class="queue-wave-wrap ${state.isPlaying ? 'playing' : 'paused'}" title="अब बज रहा है">
+                   <span class="q-bar bar-1"></span>
+                   <span class="q-bar bar-2"></span>
+                   <span class="q-bar bar-3"></span>
+                   <span class="q-bar bar-4"></span>
+                 </div>`
+              : `<span class="queue-dur">${formatTime(track.duration)}</span>`
+          }
+        </div>
+      `;
+      li.addEventListener('click', () => {
+        playAt(pos);
+      });
+      list.appendChild(li);
     });
-    list.appendChild(li);
-  });
+    lastActiveQueuePos = state.currentIndex;
+    lastQueuePlayingState = state.isPlaying;
+    return;
+  }
+
+  // If only active index or playing state changed, update existing DOM elements without rebuilding
+  if (lastActiveQueuePos !== state.currentIndex || lastQueuePlayingState !== state.isPlaying) {
+    const items = list.querySelectorAll('li');
+    items.forEach((li) => {
+      const pos = parseInt(li.dataset.pos, 10);
+      const isActive = pos === state.currentIndex;
+      const wasActive = li.classList.contains('active');
+
+      if (isActive !== wasActive) {
+        li.classList.toggle('active', isActive);
+        const rightContainer = li.querySelector('.queue-right');
+        const track = state.tracks[pos];
+
+        if (rightContainer && track) {
+          rightContainer.innerHTML = isActive
+            ? `<div class="queue-wave-wrap ${state.isPlaying ? 'playing' : 'paused'}" title="अब बज रहा है">
+                 <span class="q-bar bar-1"></span>
+                 <span class="q-bar bar-2"></span>
+                 <span class="q-bar bar-3"></span>
+                 <span class="q-bar bar-4"></span>
+               </div>`
+            : `<span class="queue-dur">${formatTime(track.duration)}</span>`;
+        }
+      } else if (isActive && lastQueuePlayingState !== state.isPlaying) {
+        const wave = li.querySelector('.queue-wave-wrap');
+        if (wave) {
+          wave.className = `queue-wave-wrap ${state.isPlaying ? 'playing' : 'paused'}`;
+        }
+      }
+    });
+
+    lastActiveQueuePos = state.currentIndex;
+    lastQueuePlayingState = state.isPlaying;
+  }
 }
 
 boot();
+
